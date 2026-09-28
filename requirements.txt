@@ -1,0 +1,33 @@
+### ============================================================
+### requirements.txt
+### Apparel Classification Dataset Pipeline
+### ============================================================
+###
+### Install with:
+###   pip install -r requirements.txt
+###
+### Python 3.9+ required (tested on 3.10, 3.11, 3.12, 3.14)
+### ============================================================
+
+# Image processing (required)
+Pillow>=10.0.0
+
+# Kaggle API (required for download)
+kaggle>=1.6.0
+
+# Perceptual hashing for near-duplicate detection (required by step 06)
+imagehash>=4.3.0
+
+# Data handling
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Charts for dataset report
+matplotlib>=3.7.0
+
+# Optional: Progress bars
+tqdm>=4.65.0
+
+# Optional: PyTorch for training (not needed for dataset prep)
+# torch>=2.0.0
+# torchvision>=0.15.0

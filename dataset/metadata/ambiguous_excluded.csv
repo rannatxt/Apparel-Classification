@@ -1,0 +1,10 @@
+source_dataset,original_category,reason_excluded
+IndoFashion,palazzo,Palazzo pants are a Western silhouette adopted into Indian ethnic wear; cannot reliably assign Indian vs Western from category label alone. Would require image-level inspection.
+IndoFashion,gown,IndoFashion 'gown' includes both Western-style gowns and heavily embroidered Indian ethnic gowns. Label alone is insufficient — requires per-image review.
+IndoFashion,dupatta,"Dupatta is an accessory/scarf, not a complete outfit. Excluded to avoid noise in outfit-level classification."
+IndoFashion,blouse,"In IndoFashion context, 'blouse' refers to the saree blouse (choli), which is a partial garment. Excluding to avoid misleading Western blouse confusion."
+IndoFashion,petticoats,Undergarment worn beneath sarees. Not an outer outfit. Excluded.
+IndoFashion,women_mojari,Footwear (traditional Indian shoe). Not clothing. Excluded.
+IndoFashion,men_mojari,Footwear. Not clothing. Excluded.
+DeepFashion-MultiModal,gown (DeepFashion),DeepFashion gowns could be Western ball gowns or fusion ethnic gowns. Will classify per caption: if caption contains 'ethnic/Indian/traditional' → exclude; otherwise → Western. This is documented in the sampling step.
+DeepFashion-MultiModal,top (generic),"'Top' is too broad — could mean blouse, crop top, tank top. Will include if paired with other Western context keywords."

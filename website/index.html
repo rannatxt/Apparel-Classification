@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apparel Classification — DL Lab Project</title>
+  <meta name="description" content="Robust Indian, Western, and Indo-Western Apparel Classification with Edge-Case Profiling for Inclusive E-Commerce — Deep Learning Laboratory Mini Project." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">🧥 Apparel Classifier</div>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#dataset">Dataset</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#models">Models</a></li>
+      <li><a href="#edge-cases">Edge Cases</a></li>
+      <li><a href="#reproduce">Reproduce</a></li>
+    </ul>
+    <button id="theme-toggle" title="Toggle dark/light mode">☀️</button>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">Deep Learning Laboratory Mini Project · 2026</div>
+    <h1>Robust Indian, Western &amp;<br/>Indo-Western Apparel Classification</h1>
+    <p class="hero-sub">
+      With Edge-Case Profiling for Inclusive E-Commerce —
+      a 3-class supervised image classification study across
+      MobileNetV3, ResNet50, and Vision Transformer architectures.
+    </p>
+
+    <div id="student-chips" class="student-chips"></div>
+
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num" id="hero-total" data-target="3194">0</div>
+        <div class="stat-lbl">Total Images</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="hero-indian" data-target="1494" style="color:var(--indian)">0</div>
+        <div class="stat-lbl">Indian</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="hero-western" data-target="1500" style="color:var(--western)">0</div>
+        <div class="stat-lbl">Western</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="hero-iw" data-target="200" style="color:var(--iw)">0</div>
+        <div class="stat-lbl">Indo-Western</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="font-size:1.25rem;" id="hero-seed">42</div>
+        <div class="stat-lbl">Random Seed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="font-size:1.1rem;" id="hero-imgsize">—</div>
+        <div class="stat-lbl">Image Size</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Problem ──────────────────────────────────────────────── -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label">01 — Motivation</div>
+    <h2>Why Is This Hard?</h2>
+    <p class="lead">
+      Classifying apparel by cultural origin is a genuinely difficult computer vision problem,
+      not just a label-assignment exercise.
+    </p>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>🥻 Visual Overlap</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          An Indian <strong>Anarkali dress</strong> and a Western <strong>A-line evening gown</strong>
+          share virtually identical silhouettes. Shape-based features alone cannot separate them —
+          the classifier must learn motifs, fabric drape, and garment construction.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🌐 Fusion Garments</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          The <strong>Indo-Western</strong> class exists precisely because garments like
+          the <em>Nehru jacket</em> and <em>dhoti pants</em> deliberately blend both design
+          languages. These are authentic fusion categories, not random mixtures of the other two classes.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🤝 Ethical Classification</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          All classification is based on <strong>garment visual characteristics</strong> only —
+          silhouette, drape, motifs, layering, and construction.
+          The model must never infer the race, ethnicity, gender identity, religion, or age of the wearer.
+        </p>
+      </div>
+      <div class="card">
+        <h3>📦 Inclusive E-Commerce</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          Existing fashion classifiers are predominantly trained on Western clothing datasets.
+          This project directly addresses that gap by building a balanced, openly reproducible
+          pipeline that treats Indian and Indo-Western apparel as first-class categories.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Dataset ──────────────────────────────────────────────── -->
+<section id="dataset">
+  <div class="container">
+    <div class="section-label">02 — Dataset</div>
+    <h2>Dataset Preparation</h2>
+    <p class="lead">
+      Built from two public Kaggle datasets using a reproducible, seed-controlled pipeline.
+      Every category assignment is documented; ambiguous categories are excluded, not guessed.
+    </p>
+
+    <!-- Sources -->
+    <div class="grid grid-2" style="margin-bottom:2rem;">
+      <div class="card">
+        <h3>IndoFashion</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.4rem;">Rajput &amp; Aneja, CVPRW 2021</p>
+        <p style="margin-top:0.75rem;font-size:0.9rem;">
+          15 discrete garment classes · ~106,000 images · structured JSON metadata (train / val / test).
+          Provides all Indian and Indo-Western classes.
+        </p>
+        <p style="margin-top:0.5rem;"><code style="font-family:monospace;font-size:0.8rem;color:var(--accent)">validmodel/indo-fashion-dataset</code></p>
+      </div>
+      <div class="card">
+        <h3>DeepFashion-MultiModal</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.4rem;">Jiang et al., SIGGRAPH 2022</p>
+        <p style="margin-top:0.75rem;font-size:0.9rem;">
+          ~12,278 high-resolution images · caption-based annotations (no discrete folders).
+          Western categories derived via keyword-matching on image captions.
+        </p>
+        <p style="margin-top:0.5rem;"><code style="font-family:monospace;font-size:0.8rem;color:var(--accent)">silverstone1903/deep-fashion-multimodal</code></p>
+      </div>
+    </div>
+
+    <!-- Class distribution chart -->
+    <h3 style="margin-bottom:0.5rem;">Class Distribution</h3>
+    <div class="chart-wrap">
+      <div class="bar-row">
+        <div class="bar-label"><span class="dot dot-indian"></span> Indian</div>
+        <div class="bar-track"><div class="bar-fill" id="bar-indian" style="width:0%"></div></div>
+        <div class="bar-val" id="val-indian">—</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="dot dot-western"></span> Western</div>
+        <div class="bar-track"><div class="bar-fill" id="bar-western" style="width:0%"></div></div>
+        <div class="bar-val" id="val-western">—</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="dot dot-iw"></span> Indo-Western</div>
+        <div class="bar-track"><div class="bar-fill" id="bar-iw" style="width:0%"></div></div>
+        <div class="bar-val" id="val-iw">—</div>
+      </div>
+    </div>
+
+    <!-- Train / val / test split -->
+    <h3 style="margin-top:2.5rem;margin-bottom:0.5rem;">Train / Val / Test Split (70 / 15 / 15, Seed 42)</h3>
+    <div class="split-bar">
+      <div class="split-seg" id="split-seg-train" style="background:var(--accent);"></div>
+      <div class="split-seg" id="split-seg-val"   style="background:var(--accent2);"></div>
+      <div class="split-seg" id="split-seg-test"  style="background:var(--accent3);"></div>
+    </div>
+    <div style="display:flex;gap:1.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+      <span style="font-size:0.8rem;color:var(--muted)">🟣 <span id="split-train">Train</span></span>
+      <span style="font-size:0.8rem;color:var(--muted)">🔵 <span id="split-val">Val</span></span>
+      <span style="font-size:0.8rem;color:var(--muted)">🩵 <span id="split-test">Test</span></span>
+    </div>
+
+    <!-- Per-class splits -->
+    <div class="grid grid-3" style="margin-top:2rem;">
+      <div class="card">
+        <h4 style="color:var(--indian);margin-bottom:0.75rem;">🇮🇳 Indian</h4>
+        <div id="split-detail-indian"></div>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--western);margin-bottom:0.75rem;">🌍 Western</h4>
+        <div id="split-detail-western"></div>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--iw);margin-bottom:0.75rem;">✨ Indo-Western</h4>
+        <div id="split-detail-iw"></div>
+      </div>
+    </div>
+
+    <!-- Category breakdown -->
+    <h3 style="margin-top:3rem;margin-bottom:1.5rem;">Category Sampling Breakdown</h3>
+    <div class="grid grid-3">
+      <div class="card">
+        <h4 style="color:var(--indian);margin-bottom:1rem;">Indian Categories</h4>
+        <div id="cat-indian"></div>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--western);margin-bottom:1rem;">Western Categories</h4>
+        <div id="cat-western"></div>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--iw);margin-bottom:1rem;">Indo-Western Categories</h4>
+        <div id="cat-iw"></div>
+      </div>
+    </div>
+
+    <!-- Cleaning stats -->
+    <h3 style="margin-top:3rem;margin-bottom:1rem;">Cleaning &amp; Quality Stats</h3>
+    <div class="grid grid-3">
+      <div class="card">
+        <div style="font-size:2rem;font-weight:800;color:var(--success)" id="cl-corrupted">—</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Corrupted images removed</div>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;font-weight:800;color:var(--accent)" id="cl-exact">—</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Exact duplicates removed (MD5)</div>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;font-weight:800;color:var(--accent2)" id="cl-near">—</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Near-duplicates removed (pHash)</div>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;font-weight:800;color:var(--muted)" id="cl-ambiguous">—</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Ambiguous categories excluded</div>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;font-weight:800;color:var(--iw)" id="cl-edgecase">—</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Edge-case candidates flagged</div>
+      </div>
+      <div class="card">
+        <div class="pass-badge">✓ 16/16 PASS</div>
+        <div style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">validate_dataset.py result</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pipeline ─────────────────────────────────────────────── -->
+<section id="pipeline">
+  <div class="container">
+    <div class="section-label">03 — Pipeline</div>
+    <h2>Dataset Preparation Pipeline</h2>
+    <p class="lead">
+      9 modular scripts, each independently runnable. The full pipeline runs with a single command
+      and is fully reproducible via a fixed random seed.
+    </p>
+
+    <div class="pipeline">
+      <div class="step"><div class="step-num">1</div>Download Datasets</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">2</div>Inspect Structure</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">3</div>Build Category Map</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">4</div>Sample Images</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">5</div>Clean &amp; Validate</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">6</div>Detect Duplicates</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">7</div>Create Splits</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">8</div>Generate Metadata</div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">9</div>Generate Report</div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:2rem;">
+      <div class="card">
+        <h3>🔍 Category Mapping (not guessed)</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          Each source category is explicitly mapped to Indian / Western / Indo-Western with a documented reason.
+          Ambiguous categories (palazzo, gown, dupatta, blouse, petticoats, footwear) are excluded with written
+          justification in <code>ambiguous_excluded.csv</code>.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🛡️ Leakage Prevention</h3>
+        <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+          Duplicate detection runs <em>before</em> splitting. Exact duplicates (MD5) and
+          near-duplicates (pHash, Hamming distance ≤ 6) are removed from the candidate pool
+          so the same image cannot appear in both training and test sets.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Models ───────────────────────────────────────────────── -->
+<section id="models">
+  <div class="container">
+    <div class="section-label">04 — Models</div>
+    <h2>Model Comparison</h2>
+    <p class="lead">
+      Three architectures are evaluated under identical conditions on the same dataset split.
+      Results will be updated here once training is complete.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Balanced Acc.</th>
+          </tr>
+        </thead>
+        <tbody id="model-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:2rem;">
+      <div class="card">
+        <h3>📱 MobileNetV3</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">
+          Lightweight depthwise separable convolutions. Efficient for mobile/edge deployment.
+          Expected to be fastest at inference.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🏗️ ResNet50</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">
+          Residual connections enabling deep 50-layer training. Established baseline for
+          image classification. Strong feature extraction for texture and shape.
+        </p>
+      </div>
+      <div class="card">
+        <h3>👁️ Vision Transformer (ViT)</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">
+          Patch-based self-attention mechanism. Strong at capturing global garment structure
+          and long-range visual patterns like motifs and drape.
+        </p>
+      </div>
+    </div>
+
+    <!-- Grad-CAM placeholder -->
+    <h3 style="margin-top:3rem;">Grad-CAM Visual Explanations</h3>
+    <p style="color:var(--muted);margin-top:0.5rem;font-size:0.9rem;">
+      Gradient-weighted Class Activation Maps will be shown here after training,
+      highlighting which garment regions the model attends to for each class prediction.
+    </p>
+    <div class="grid grid-3" style="margin-top:1.5rem;">
+      <div class="card" style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2rem;">🔥</div>
+        <div style="color:var(--muted);font-size:0.8rem;margin-top:0.5rem;">Indian — Pending</div>
+      </div>
+      <div class="card" style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2rem;">🔥</div>
+        <div style="color:var(--muted);font-size:0.8rem;margin-top:0.5rem;">Western — Pending</div>
+      </div>
+      <div class="card" style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2rem;">🔥</div>
+        <div style="color:var(--muted);font-size:0.8rem;margin-top:0.5rem;">Indo-Western — Pending</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Edge Cases ────────────────────────────────────────────── -->
+<section id="edge-cases">
+  <div class="container">
+    <div class="section-label">05 — Edge Cases</div>
+    <h2>Edge-Case Profiling</h2>
+    <p class="lead">
+      <span id="ec-total">614</span> images were automatically flagged for edge-case review
+      based on garment characteristics. These are candidates for manual spot-check — labels
+      are not automatically changed.
+    </p>
+
+    <div class="ec-grid">
+      <div class="ec-card">
+        <div class="ec-tag tag-visually_similar">Visually Similar</div>
+        <div class="ec-count" id="ec-visually-similar">373</div>
+        <div class="ec-label">
+          Images where Indian and Western garments share a similar silhouette
+          (e.g. Anarkali vs A-line gown). Highest classification risk.
+        </div>
+      </div>
+      <div class="ec-card">
+        <div class="ec-tag tag-hybrid">Hybrid / Fusion</div>
+        <div class="ec-count" id="ec-hybrid">200</div>
+        <div class="ec-label">
+          All Indo-Western images. Authentic fusion garments (dhoti pants, Nehru jacket)
+          that blend both design languages by construction.
+        </div>
+      </div>
+      <div class="ec-card">
+        <div class="ec-tag tag-ambiguous">Ambiguous</div>
+        <div class="ec-count" id="ec-ambiguous">41</div>
+        <div class="ec-label">
+          Images where the garment label could not be confidently assigned
+          from category name alone. Flagged for manual review.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:2rem;">
+      <h3>Edge-Case Candidate List</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-top:0.5rem;">
+        All flagged images are recorded in <code>dataset/metadata/edge_case_candidates.csv</code>
+        with their <code>edge_case</code> tag, source category, and image path.
+        The file contains <strong id="ec-total-2">614</strong> rows ready for manual spot-check.
+        No labels were automatically changed based on edge-case flags.
+      </p>
+      <script>document.getElementById('ec-total-2').id = 'ec-total-2-ref';</script>
+    </div>
+  </div>
+</section>
+
+<!-- ── Limitations & Ethics ─────────────────────────────────── -->
+<section id="limitations">
+  <div class="container">
+    <div class="section-label">06 — Limitations &amp; Ethics</div>
+    <h2>Known Limitations &amp; Ethical Notes</h2>
+
+    <div class="ethics-box">
+      <p><strong>Classification by garment only.</strong>
+        This system classifies <em>garments</em>, not people.
+        No demographic information (race, ethnicity, gender identity, religion, age)
+        is used as a feature or inferred as output. Garment labels are assigned based on
+        silhouette, drape, fabric structure, motifs, and construction — never based
+        on the appearance of the wearer.
+      </p>
+    </div>
+
+    <div class="pills" style="margin-top:1.5rem;">
+      <div class="pill">
+        <div class="pill-icon">⚠️</div>
+        <div><strong>Small Indo-Western class:</strong> Only 200 images (6.3% of total). The model may underperform on this class. Use balanced accuracy and per-class F1 for fair evaluation.</div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">🔑</div>
+        <div><strong>Caption-derived Western labels:</strong> DeepFashion Western categories were derived by keyword-matching on image captions, not discrete folder labels. Mismatches are possible.</div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">🧠</div>
+        <div><strong>Indo-Western is not a random mix:</strong> dhoti pants and Nehru jackets are authentic fusion garments. Creating Indo-Western by mixing Indian and Western images would be methodologically incorrect.</div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">📏</div>
+        <div><strong>Ambiguous categories excluded:</strong> palazzo, gown, dupatta, blouse, petticoats, and footwear were excluded rather than arbitrarily assigned. See <code>ambiguous_excluded.csv</code>.</div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">🖼️</div>
+        <div><strong>Dataset licences:</strong> IndoFashion and DeepFashion-MultiModal are research datasets. Check their respective Kaggle pages for licence terms before commercial use.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Reproduce ─────────────────────────────────────────────── -->
+<section id="reproduce">
+  <div class="container">
+    <div class="section-label">07 — Reproduce</div>
+    <h2>Reproduce This Dataset</h2>
+    <p class="lead">
+      Every step is scripted and seed-controlled. Run the pipeline on any machine with
+      Python 3.10+ and a Kaggle account.
+    </p>
+
+    <div class="grid grid-2">
+      <div>
+        <h3>1. Install Dependencies</h3>
+        <pre><span class="cmd">pip install</span> kaggle Pillow imagehash matplotlib</pre>
+
+        <h3 style="margin-top:1.5rem;">2. Set Up Kaggle Credentials</h3>
+        <pre><span class="cmt"># Go to https://www.kaggle.com/settings → API → Create New Token
+# Save the downloaded token to:</span>
+<span class="cmt"># Windows: C:\Users\&lt;you&gt;\.kaggle\access_token
+# Linux  : ~/.kaggle/access_token</span></pre>
+
+        <h3 style="margin-top:1.5rem;">3. Run the Pipeline</h3>
+        <pre><span class="cmd">py -3</span> prepare_dataset.py
+<span class="cmt"># Or skip the download if already done:</span>
+<span class="cmd">py -3</span> prepare_dataset.py <span class="kw">--skip-download</span></pre>
+
+        <h3 style="margin-top:1.5rem;">4. Validate</h3>
+        <pre><span class="cmd">py -3</span> validate_dataset.py
+<span class="cmt"># Expected output: OVERALL: PASS (16/16)</span></pre>
+      </div>
+      <div>
+        <h3>5. Use in PyTorch</h3>
+        <pre><span class="kw">from</span> torchvision <span class="kw">import</span> datasets, transforms
+<span class="kw">from</span> torch.utils.data <span class="kw">import</span> DataLoader
+
+transform = transforms.Compose([
+    transforms.Resize((<span class="str">224</span>, <span class="str">224</span>)),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[<span class="str">0.485</span>, <span class="str">0.456</span>, <span class="str">0.406</span>],
+        std =[<span class="str">0.229</span>, <span class="str">0.224</span>, <span class="str">0.225</span>]
+    ),
+])
+
+<span class="cmt"># Classes auto-detected: Indian, Indo-Western, Western</span>
+train_ds = datasets.ImageFolder(
+    <span class="str">"dataset/train"</span>, transform=transform
+)
+val_ds = datasets.ImageFolder(
+    <span class="str">"dataset/val"</span>, transform=transform
+)
+test_ds = datasets.ImageFolder(
+    <span class="str">"dataset/test"</span>, transform=transform
+)
+
+train_loader = DataLoader(train_ds, batch_size=<span class="str">32</span>,
+                          shuffle=<span class="kw">True</span>, num_workers=<span class="str">4</span>)
+val_loader   = DataLoader(val_ds,   batch_size=<span class="str">32</span>,
+                          shuffle=<span class="kw">False</span>)
+test_loader  = DataLoader(test_ds,  batch_size=<span class="str">32</span>,
+                          shuffle=<span class="kw">False</span>)</pre>
+
+        <div class="card" style="margin-top:1rem;">
+          <p style="font-size:0.85rem;color:var(--muted);">
+            📁 <strong>GitHub:</strong>
+            <a href="#" id="github-link">Link to be added</a>
+            &nbsp;·&nbsp;
+            📋 <strong>Report:</strong>
+            <code>dataset/reports/dataset_report.md</code>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <p>
+      Deep Learning Laboratory Mini Project · Global Academy of Technology, Bengaluru<br/>
+      Swaroop Vijaykumar Purandare (1GA23CS176) · Ranna (1GA23CS135) · SUKESH (1GA23CS171)<br/>
+      <span style="font-size:0.8rem;color:var(--muted);">
+        Dataset: IndoFashion (CVPRW 2021) + DeepFashion-MultiModal (SIGGRAPH 2022) ·
+        Classification by garment characteristics only · No demographic inference
+      </span>
+    </p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

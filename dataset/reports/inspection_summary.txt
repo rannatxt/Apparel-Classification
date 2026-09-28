@@ -1,0 +1,3 @@
+DATASET INSPECTION SUMMARY
+========================================
+IndoFashion  total records: 106166

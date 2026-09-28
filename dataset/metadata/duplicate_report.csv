@@ -1,0 +1,7 @@
+hamming_distance,staging_path,image_id_1,image_id_2,image_id,duplicate_of,type
+,C:\Users\aweso\OneDrive\Desktop\DL\dataset\staging\Indian\IND_000960.jpg,,,IND_000960,IND_000954,exact_md5
+4,,IND_000003,IND_000336,,,near_duplicate_phash
+4,,IND_000098,IND_000282,,,near_duplicate_phash
+0,,IND_000895,IND_000946,,,near_duplicate_phash
+4,,IND_000940,IND_001093,,,near_duplicate_phash
+2,,IND_001408,IND_001489,,,near_duplicate_phash

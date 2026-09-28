@@ -1,0 +1,17 @@
+source_dataset,original_category,final_class,reason,selected_count
+IndoFashion,saree,Indian,Quintessential traditional Indian drape,350
+IndoFashion,women_kurta,Indian,Traditional Indian subcontinent top for women,300
+IndoFashion,leggings_and_salwar,Indian,Salwar is a traditional Indian lower garment,200
+IndoFashion,lehenga,Indian,Traditional Indian skirt-blouse combination,300
+IndoFashion,men_kurta,Indian,Traditional Indian men's top,200
+IndoFashion,sherwani,Indian,Formal traditional Indian men's attire,150
+IndoFashion,dhoti_pants,Indo-Western,Dhoti-pant fuses Indian dhoti drape with Western trouser construction,100
+IndoFashion,nehru_jacket,Indo-Western,Prototype Indo-Western fusion: Indian collar + Western jacket body,100
+DeepFashion-MultiModal,shirt / t-shirt / polo,Western,Core Western casual tops,250
+DeepFashion-MultiModal,dress / skirt,Western,Western feminine garments,200
+DeepFashion-MultiModal,jeans / trousers / pants,Western,Western bottoms,200
+DeepFashion-MultiModal,jacket / coat / blazer,Western,Western outerwear,200
+DeepFashion-MultiModal,hoodie / sweater / cardigan,Western,Western knitwear/casualwear,200
+DeepFashion-MultiModal,suit / formal wear,Western,Western formal attire,200
+DeepFashion-MultiModal,shorts / tops / casual,Western,Western casualwear miscellaneous,250
+DeepFashion-MultiModal,nehru / bandhgala / fusion,Indo-Western,Fusion keyword detected in caption,0

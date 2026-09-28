@@ -1,0 +1,17 @@
+metric,statistic,value
+width,min,224
+width,max,224
+width,mean,224.0
+width,median,224
+height,min,224
+height,max,224
+height,mean,224.0
+height,median,224
+aspect_ratio,min,0.2562
+aspect_ratio,max,2.2069
+aspect_ratio,mean,0.6471
+aspect_ratio,median,0.6812
+file_size_bytes,min,5741
+file_size_bytes,max,47095
+file_size_bytes,mean,15130.9562
+file_size_bytes,median,14475

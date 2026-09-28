@@ -1,0 +1,72 @@
+{
+  "project": {
+    "title": "Robust Indian, Western, and Indo-Western Apparel Classification",
+    "subtitle": "with Edge-Case Profiling for Inclusive E-Commerce",
+    "github": "#"
+  },
+  "students": [
+    { "name": "Swaroop Vijaykumar Purandare", "usn": "1GA23CS176" },
+    { "name": "Ranna", "usn": "1GA23CS135" },
+    { "name": "SUKESH", "usn": "1GA23CS171" }
+  ],
+  "dataset": {
+    "total_images": 3194,
+    "seed": 42,
+    "split_ratios": { "train": 70, "val": 15, "test": 15 },
+    "sources": [
+      { "name": "IndoFashion", "slug": "validmodel/indo-fashion-dataset", "paper": "Rajput & Aneja, CVPRW 2021", "original_size": 106000 },
+      { "name": "DeepFashion-MultiModal", "slug": "silverstone1903/deep-fashion-multimodal", "paper": "Jiang et al., SIGGRAPH 2022", "original_size": 44096 }
+    ],
+    "classes": {
+      "Indian":       { "total": 1494, "train": 1046, "val": 224, "test": 224 },
+      "Western":      { "total": 1500, "train": 1050, "val": 225, "test": 225 },
+      "Indo-Western": { "total": 200,  "train": 140,  "val": 30,  "test": 30  }
+    },
+    "splits": {
+      "train": 2236,
+      "val":   479,
+      "test":  479
+    },
+    "cleaning": {
+      "corrupted_removed": 0,
+      "exact_duplicates_removed": 1,
+      "near_duplicates_removed": 5,
+      "ambiguous_excluded": 9,
+      "edge_case_candidates": 614
+    },
+    "image_size": "224 × 224 px (JPEG)",
+    "category_breakdown": {
+      "Indian": [
+        { "category": "Saree",              "count": 350 },
+        { "category": "Women's Kurta",       "count": 300 },
+        { "category": "Lehenga",            "count": 300 },
+        { "category": "Leggings & Salwar",  "count": 200 },
+        { "category": "Men's Kurta",        "count": 200 },
+        { "category": "Sherwani",           "count": 150 }
+      ],
+      "Indo-Western": [
+        { "category": "Dhoti Pants",        "count": 100 },
+        { "category": "Nehru Jacket",       "count": 100 }
+      ],
+      "Western": [
+        { "category": "Shirt / T-shirt / Polo",      "count": 250 },
+        { "category": "Shorts / Tops / Casual",      "count": 250 },
+        { "category": "Dress / Skirt",               "count": 200 },
+        { "category": "Jeans / Trousers / Pants",    "count": 200 },
+        { "category": "Jacket / Coat / Blazer",      "count": 200 },
+        { "category": "Hoodie / Sweater / Cardigan", "count": 200 },
+        { "category": "Suit / Formal Wear",          "count": 200 }
+      ]
+    }
+  },
+  "models": {
+    "MobileNetV3":  { "accuracy": "Pending", "precision": "Pending", "recall": "Pending", "f1": "Pending", "balanced_accuracy": "Pending" },
+    "ResNet50":     { "accuracy": "Pending", "precision": "Pending", "recall": "Pending", "f1": "Pending", "balanced_accuracy": "Pending" },
+    "ViT":          { "accuracy": "Pending", "precision": "Pending", "recall": "Pending", "f1": "Pending", "balanced_accuracy": "Pending" }
+  },
+  "assets": {
+    "confusion_matrices": [],
+    "gradcam_examples":   [],
+    "edge_case_gallery":  []
+  }
+}

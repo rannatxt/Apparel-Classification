@@ -1,0 +1,13 @@
+split,class,count
+train,Indian,1046
+train,Indo-Western,140
+train,Western,1050
+val,Indian,224
+val,Indo-Western,30
+val,Western,225
+test,Indian,224
+test,Indo-Western,30
+test,Western,225
+total,Indian,1494
+total,Indo-Western,200
+total,Western,1500
