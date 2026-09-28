@@ -28,6 +28,7 @@ matplotlib>=3.7.0
 # Optional: Progress bars
 tqdm>=4.65.0
 
-# Optional: PyTorch for training (not needed for dataset prep)
-# torch>=2.0.0
-# torchvision>=0.15.0
+# ML Pipeline (required for training and evaluation)
+torch>=2.0.0
+torchvision>=0.15.0
+scikit-learn>=1.2.0

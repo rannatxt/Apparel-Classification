@@ -31,6 +31,8 @@ dataset/staging/
 dataset/images/
 *.zip
 *.tar.gz
+*.pth
+*.pt
 
 # IDEs
 .idea/
